@@ -21,7 +21,9 @@
 #include <float.h>
 #include <stdlib.h>
 
+#include "ColorManager.h"
 #include "DisplaySettings.h"
+#include "dialogs/GUIDialogFileBrowser.h"
 #include "dialogs/GUIDialogYesNo.h"
 #include "guilib/GraphicContext.h"
 #include "guilib/gui3d.h"
@@ -30,6 +32,7 @@
 #include "settings/AdvancedSettings.h"
 #include "settings/lib/Setting.h"
 #include "settings/Settings.h"
+#include "storage/MediaManager.h"
 #include "threads/SingleLock.h"
 #include "utils/log.h"
 #include "utils/StringUtils.h"
@@ -210,6 +213,34 @@ void CDisplaySettings::Clear()
   m_pixelRatio = 1.0f;
   m_verticalShift = 0.0f;
   m_nonLinearStretched = false;
+}
+
+void CDisplaySettings::OnSettingAction(const CSetting *setting)
+{
+  if (setting == NULL)
+    return;
+
+  const std::string &settingId = setting->GetId();
+  if (settingId == "videoscreen.cms3dlut")
+  {
+    std::string path = ((CSettingString*)setting)->GetValue();
+    VECSOURCES shares;
+    g_mediaManager.GetLocalDrives(shares);
+    if (CGUIDialogFileBrowser::ShowAndGetFile(shares, ".3dlut", g_localizeStrings.Get(16042), path))
+    {
+      ((CSettingString*)setting)->SetValue(path);
+    }
+  }
+  else if (settingId == "videoscreen.displayprofile")
+  {
+    std::string path = ((CSettingString*)setting)->GetValue();
+    VECSOURCES shares;
+    g_mediaManager.GetLocalDrives(shares);
+    if (CGUIDialogFileBrowser::ShowAndGetFile(shares, ".icc|.icm", g_localizeStrings.Get(16043), path))
+    {
+      ((CSettingString*)setting)->SetValue(path);
+    }
+  }
 }
 
 bool CDisplaySettings::OnSettingChanging(const CSetting *setting)
@@ -750,6 +781,61 @@ void CDisplaySettings::SettingOptionsPreferredStereoscopicViewModesFiller(const 
     // also skip "mono" mode which is no real stereoscopic mode
     if (mode != RENDER_STEREO_MODE_MONO && g_Windowing.SupportsStereo(mode))
       list.push_back(make_pair(CStereoscopicsManager::Get().GetLabelForStereoMode(mode), mode));
+  }
+}
+
+void CDisplaySettings::SettingOptionsCmsModesFiller(const CSetting *setting, std::vector< std::pair<std::string, int> > &list, int &current, void *data)
+{
+  const static std::string cmsModeLabels[] = { "3DLUT", "ICC profile" }; // FIXME: should be moved to ColorManager.h?
+  for (int i = 0; i < CMS_MODE_COUNT; i++)
+  {
+    CMS_MODE mode = (CMS_MODE) i;
+#ifndef HAVE_LCMS2
+    if (mode == CMS_MODE_PROFILE) continue;
+#endif
+    list.push_back(std::make_pair(cmsModeLabels[i], mode));
+  }
+}
+
+void CDisplaySettings::SettingOptionsCmsWhitepointsFiller(const CSetting *setting, std::vector< std::pair<std::string, int> > &list, int &current, void *data)
+{
+  const static std::string cmsWhitepointLabels[] = { "D65", "D93" }; // FIXME: should be moved to ColorManager.h?
+  for (int i = 0; i < CMS_WHITEPOINT_COUNT; i++)
+  {
+    CMS_WHITEPOINT whitepoint = (CMS_WHITEPOINT) i;
+    list.push_back(std::make_pair(cmsWhitepointLabels[i], whitepoint));
+  }
+}
+
+void CDisplaySettings::SettingOptionsCmsPrimariesFiller(const CSetting *setting, std::vector< std::pair<std::string, int> > &list, int &current, void *data)
+{
+  const static std::string cmsPrimariesLabels[] = {
+    "Automatic",
+    "HDTV",
+    "SDTV",
+    "NTSC 1953",
+    "PAL/SECAM 1975",
+    "HDTV 1988",
+  }; // FIXME: should be moved to ColorManager.h?
+  for (int i = 0; i < CMS_PRIMARIES_COUNT; i++)
+  {
+    CMS_PRIMARIES primaries = (CMS_PRIMARIES) i;
+    list.push_back(std::make_pair(cmsPrimariesLabels[i], primaries));
+  }
+}
+
+void CDisplaySettings::SettingOptionsCmsGammaModesFiller(const CSetting *setting, std::vector< std::pair<std::string, int> > &list, int &current, void *data)
+{
+  const static std::string cmsGammaModeLabels[] = {
+    "BT.1886",
+    "Input offset",
+    "Output offset",
+    "Absolute",
+  }; // FIXME: should be moved to ColorManager.h?
+  for (int i = 0; i < CMS_TRC_COUNT; i++)
+  {
+    CMS_TRC_TYPE mode = (CMS_TRC_TYPE) i;
+    list.push_back(std::make_pair(cmsGammaModeLabels[i], mode));
   }
 }
 

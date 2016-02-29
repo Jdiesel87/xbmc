@@ -232,6 +232,10 @@ libusb_disabled_udev_found="== libusb disabled. =="
 libcec_enabled="== libcec enabled. =="
 libcec_disabled="== libcec disabled. CEC adapter support will not be available. =="
 
+lcms2_enabled="== lcms2 enabled. =="
+lcms2_not_found="== Could not find lcms2. ICC profile support will not be available. =="
+lcms2_disabled="== lcms2 disabled. ICC profile support will not be available. =="
+
 AC_ARG_WITH([ffmpeg],
   [AS_HELP_STRING([--with-ffmpeg],
   [ffmpeg options: auto (search pkg-config or auto build), force (always build ffmpeg), shared (link dynamically), path_to_ffmpeg [default=force]])],
@@ -526,6 +530,12 @@ AC_ARG_ENABLE([libcec],
   [enable libcec support (default is auto)])],
   [use_libcec=$enableval],
   [use_libcec=auto])
+
+AC_ARG_ENABLE([lcms2],
+  [AS_HELP_STRING([--enable-lcms2],
+  [enable lcms2 support (default is auto)])],
+  [use_lcms2=$enableval],
+  [use_lcms2=auto])
 
 AC_ARG_ENABLE([libcap],
   [AS_HELP_STRING([--enable-libcap],
@@ -1413,6 +1423,9 @@ if test "$use_x11" = "yes"; then
   PKG_CHECK_MODULES([DRM],  [libdrm],
     [INCLUDES="$INCLUDES $DRM_CFLAGS"; LIBS="$LIBS $DRM_LIBS"],
     AC_MSG_ERROR($missing_library))
+  PKG_CHECK_MODULES([EGL], [egl],
+    [INCLUDES="$INCLUDES $EGL_CFLAGS"; LIBS="$LIBS $EGL_LIBS"],
+    AC_MSG_ERROR($missing_library))
   AC_DEFINE([HAVE_X11], [1], [Define to 1 if you have X11 libs installed.])
 else
   AC_MSG_RESULT($x11_disabled)
@@ -1671,6 +1684,21 @@ if test "x$use_libcec" != "xno"; then
 else
   use_libcec="no"
   AC_MSG_NOTICE($libcec_disabled)
+fi
+
+# lcms2
+if test "$use_lcms2" = "auto"; then
+  PKG_CHECK_MODULES([LCMS2],[lcms2],,[use_lcms2="no";AC_MSG_RESULT($lcms2_not_found)])
+elif test "$use_lcms2" = "yes" ; then
+  PKG_CHECK_MODULES([LCMS2],[lcms2],,[use_lcms2="no";AC_MSG_ERROR($lcms2_not_found)])
+else
+  AC_MSG_NOTICE($lcms2_disabled)
+fi
+
+if test "x$use_lcms2" != "xno"; then
+  USE_LCMS2=1;INCLUDES="$INCLUDES $LCMS2_CFLAGS";LIBS="$LIBS $LCMS2_LIBS"
+  AC_DEFINE([HAVE_LCMS2],[1],["Define to 1 if lcms2 is installed"])
+  AC_MSG_NOTICE($lcms2_enabled)
 fi
 
 # libcap
@@ -2415,6 +2443,12 @@ else
   final_message="$final_message\n  libcec support:\tNo"
 fi
 
+if test "x$use_lcms2" != "xno"; then
+  final_message="$final_message\n  lcms2 support:\tYes"
+else
+  final_message="$final_message\n  lcms2 support:\tNo"
+fi
+
 if test "x$use_libcap" != "xno"; then
   final_message="$final_message\n  libcap support:\tYes"
 else
@@ -2455,6 +2489,7 @@ OUTPUT_FILES="Makefile \
     xbmc/cdrip/Makefile \
     xbmc/cores/Makefile \
     xbmc/cores/VideoRenderers/Makefile \
+    xbmc/cores/VideoRenderers/HwDecRender/Makefile \
     xbmc/cores/dvdplayer/Makefile \
     lib/libdvd/Makefile \
     xbmc/cores/DllLoader/Makefile \

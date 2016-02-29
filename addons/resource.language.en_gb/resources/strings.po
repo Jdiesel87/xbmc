@@ -6155,7 +6155,12 @@ msgctxt "#13423"
 msgid "Remember for this path"
 msgstr ""
 
-#empty string with id 13424
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+msgctxt "#13424"
+msgid "Color management settings"
+msgstr ""
+
+#empty string with id 13425
 
 #: system/settings/settings.xml
 msgctxt "#13425"
@@ -7334,7 +7339,83 @@ msgctxt "#16041"
 msgid "On"
 msgstr ""
 
-#empty strings from id 16042 to 16099
+#: xbmc/video/dialogs/GUIDialogVideoSettings.cpp
+msgctxt "#16042"
+msgid "3D LUT"
+msgstr ""
+
+#: xbmc/video/dialogs/GUIDialogVideoSettings.cpp
+msgctxt "#16043"
+msgid "ICC Profile"
+msgstr ""
+
+#: xbmc/video/dialogs/GUIDialogVideoSettings.cpp
+#. gamma type labels
+msgctxt "#16044"
+msgid "BT.1886"
+msgstr ""
+
+msgctxt "#16045"
+msgid "Input offset"
+msgstr ""
+
+msgctxt "#16046"
+msgid "Output offset"
+msgstr ""
+
+msgctxt "#16047"
+msgid "Absolute"
+msgstr ""
+
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+#. whitepoint labels
+msgctxt "#16048"
+msgid "D65 (standard)"
+msgstr ""
+
+msgctxt "#16049"
+msgid "D93 (Japanese NTSC)"
+msgstr ""
+
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+#. primaries labels
+msgctxt "#16050"
+msgid "Automatic"
+msgstr ""
+
+msgctxt "#16051"
+msgid "HDTV (BT.709)"
+msgstr ""
+
+msgctxt "#16052"
+msgid "SDTV (SMPTE C)"
+msgstr ""
+
+msgctxt "#16053"
+msgid "NTSC 1953 (BT.470 M)"
+msgstr ""
+
+msgctxt "#16054"
+msgid "PAL/SECAM 1975 (BT.470 B/G)"
+msgstr ""
+
+msgctxt "#16055"
+msgid "HDTV 1988 (SMPTE 240M)"
+msgstr ""
+
+msgctxt "#16056"
+msgid "16x16"
+msgstr ""
+
+msgctxt "#16057"
+msgid "64x64"
+msgstr ""
+
+msgctxt "#16058"
+msgid "256x256"
+msgstr ""
+
+#empty strings from id 16059 to 16099
 
 #: xbmc/video/windows/GUIWindowVideoNav.cpp
 msgctxt "#16100"
@@ -14102,7 +14183,27 @@ msgctxt "#36042"
 msgid "Use limited colour range (16-235)"
 msgstr ""
 
-#empty strings from id 36043 to 36100
+#: system/settings/settings.xml
+msgctxt "#36043"
+msgid "Dither depth"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#36044"
+msgid "Dithering"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#36045"
+msgid "Color management"
+msgstr ""
+
+#: system/settings/settings.xml
+msgctxt "#36046"
+msgid "3DLUT path"
+msgstr ""
+
+#empty strings from id 36047 to 36100
 #strings from 36100 to 36999 are reserved for settings descriptions
 
 #. Description of settings section "Appearance"
@@ -16254,7 +16355,85 @@ msgctxt "#36549"
 msgid "Use iOS8 compatible AirPlay support. If you have trouble with older iOS devices detecting this application as a valid target try switching this off. This option requires a restart to take effect!"
 msgstr ""
 
-#empty strings from id 36550 to 36599
+#. Description of setting "System -> Video output -> Dither depth" with label #36043
+#: system/settings/settings.xml
+msgctxt "#36550"
+msgid "Video dithering output precision in bits. Use the highest setting that doesn't show banding. The default of 8 is recommended for most systems. If your GPU is set to scale the output RGB levels or you use a laptop screen, a 7 or 6 bit setting may eliminate more banding. Lower settings are available for testing purposes only to make it easy to see whether dithering is applied and that the dither noise pixel size matches the display resolution."
+msgstr ""
+
+#. Description of setting "System -> Video output -> Dither" with label #36044
+#: system/settings/settings.xml
+msgctxt "#36551"
+msgid "Eliminate banding caused by RGB level conversion or other processing by adding a small amount of noise to the picture. This can be disabled for slower systems, or when Kodi is set to limited range RGB output and no video processing is needed."
+msgstr ""
+
+#. Description of setting "System -> Video output -> ICC Profile" with label #36045
+#: system/settings/settings.xml
+msgctxt "#36552"
+msgid "ICC display profile for color management."
+msgstr ""
+
+#. Description of setting "System -> Video output -> 3DLUT path" with label #36046
+#: system/settings/settings.xml
+msgctxt "#36553"
+msgid "Default 3D LUT for color management."
+msgstr ""
+
+#. label of a setting, allowing to toggle the color management on/off
+#: xbmc/video/dialogs/GUIDialogVideoSettings.cpp
+msgctxt "#36554"
+msgid "Color management"
+msgstr ""
+
+#. label of a setting, allowing to specify the color management mode of a video
+#: xbmc/video/dialogs/GUIDialogVideoSettings.cpp
+msgctxt "#36555"
+msgid "Color management mode"
+msgstr ""
+
+#. label of a setting, allowing to specify the 3dlut for a video
+#: xbmc/video/dialogs/GUIDialogVideoSettings.cpp
+msgctxt "#36556"
+msgid "3D LUT"
+msgstr ""
+
+#. label of a setting, allowing to specify the type of display gamma
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+msgctxt "#36557"
+msgid "Gamma type"
+msgstr ""
+
+#. label of a setting, allowing to specify the effective display gamma
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+msgctxt "#36558"
+msgid "Effective gamma"
+msgstr ""
+
+#. gamma display format
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+msgctxt "#36559"
+msgid "%1.2f"
+msgstr ""
+
+#. label of a setting, allowing to specify the display whitepoint
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+msgctxt "#36560"
+msgid "Whitepoint"
+msgstr ""
+
+#. label of a setting, allowing to specify the display primaries
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+msgctxt "#36561"
+msgid "Primaries"
+msgstr ""
+
+#. label of a setting, allowing to specify the size of generated 3dlut
+#: xbmc/video/dialogs/GUIDialogCMSSettings.cpp
+msgctxt "#36562"
+msgid "CLUT resolution"
+msgstr ""
+
+#empty strings from id 36562 to 36599
 #reserved strings 365XX
 
 #. Description of settings category "Music -> Library" with label #14022
